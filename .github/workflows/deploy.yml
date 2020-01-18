@@ -1,4 +1,4 @@
-name: CI
+name: Deploy
 
 on:
   push:
@@ -7,11 +7,20 @@ on:
 
 jobs:
   build:
-    name: deploy to github pages
+    name: "deploy to github pages"
     runs-on: ubuntu-latest
 
     steps:
-    - name: GitHub Pages Deploy
+    - uses: actions/checkout@v1
+    
+    - name: install node v12
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - run: npm install
+    - run: npm run build
+
+    - name: "GitHub Pages Deploy"
       uses: peaceiris/actions-gh-pages@v2
       env:
         ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
